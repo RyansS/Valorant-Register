@@ -9,7 +9,13 @@ namespace ValorantRegister.Controllers
     {
         private ValoContext valoContext;
 
+        [HttpPost]
+        public IActionResult PostRegisterUser([FromBody] ValoRegister user)
+        {
+            valoContext.Users.Add(user);
 
+            return CreatedAtAction(nameof(GetUserById), new {id = user.Id}, user);
+        }
 
         [HttpGet]
 
