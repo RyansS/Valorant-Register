@@ -18,6 +18,14 @@ namespace ValorantRegister.Controllers
             return Ok(valoContext.Users);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetUserById (int id)
+        {
+            var user = valoContext.Users.FirstOrDefault(user => user.Id == id);
 
+            if (user == null) return NotFound();
+
+            return Ok(user);
+        }
     }
 }
