@@ -5,14 +5,23 @@ using ValorantRegister.Model;
 namespace ValorantRegister.Controllers
 {
     [Route("api/[controller]")]
+
+    
+
     public class ValoRegisterController : ControllerBase
     {
-        private ValoContext valoContext;
+        private ValoContext _valoContext;
+
+        public ValoRegisterController (ValoContext valoContext)
+        {
+            _valoContext = valoContext;
+        }
 
         [HttpPost]
         public IActionResult PostRegisterUser([FromBody] ValoRegister user)
         {
-            valoContext.Users.Add(user);
+            _valoContext.Users.Add(user);
+            _valoContext.SaveChanges();
 
             return CreatedAtAction(nameof(GetUserById), new {id = user.Id}, user);
         }
@@ -21,13 +30,13 @@ namespace ValorantRegister.Controllers
 
         public IActionResult GetAllUsers()
         {
-            return Ok(valoContext.Users);
+            return Ok(_valoContext.Users);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetUserById (int id)
         {
-            var user = valoContext.Users.FirstOrDefault(user => user.Id == id);
+            var user = _valoContext.Users.FirstOrDefault(user => user.Id == id);
 
             if (user == null) return NotFound();
 
