@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ValorantRegister.Data;
+using ValorantRegister.DTOs;
 using ValorantRegister.Model;
 
 namespace ValorantRegister.Controllers
@@ -11,15 +13,19 @@ namespace ValorantRegister.Controllers
     public class ValoRegisterController : ControllerBase
     {
         private ValoContext _valoContext;
+        private IMapper _mapper;
 
-        public ValoRegisterController (ValoContext valoContext)
+        public ValoRegisterController (ValoContext valoContext, IMapper mapper)
         {
             _valoContext = valoContext;
+            _mapper = mapper;
         }
 
         [HttpPost]
-        public IActionResult PostRegisterUser([FromBody] ValoRegister user)
+        public IActionResult PostRegisterUser([FromBody] ValoDto userDto)
         {
+            ValoRegister user = _mapper.Map<ValoRegister>(userDto);
+
             _valoContext.Users.Add(user);
             _valoContext.SaveChanges();
 

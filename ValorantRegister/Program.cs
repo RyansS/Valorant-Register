@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("ValoConnection");
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddDbContext<ValoContext>(options => 
 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
